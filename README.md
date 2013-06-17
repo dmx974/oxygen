@@ -54,7 +54,7 @@ How to add custom filters?
 		return "I'm the father of " + number + " cats all named " + obj;
 	};
 
-Then, in the template side, your brand new filter is available:
+And now, in the template side, your brand new filter is available:
 
 	{{ "Alfred"|caterizer(6) }}
 
