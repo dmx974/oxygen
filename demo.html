@@ -1,0 +1,45 @@
+<html>
+<head>
+	<script type="text/javascript" src="oxygen.js"></script>
+</head>
+
+<body>
+
+	<script type="html/template" id="users">
+		<ul>
+		{% for i in users %}
+			<li><a href="{{ users[i].url }}">{{ users[i].name|capitalize }}</a></li>
+			{% if users[i].name == "John Doz" %}
+				<div>{{ users[i].name|capitalize|replace("doz", "Doe") }}</div>
+			{% else %}
+				<div>no no no</div>
+			{% endif %}
+		{% endfor %}
+		</ul>
+	</script>
+
+	<div id="result">
+		...
+		...
+	</div>
+
+	<script type="text/javascript">
+
+	var data = {
+		users : [
+			{
+				url : 'http://www.google.fr',
+				name : 'John Doz'
+			},
+			{
+				url : "http://www.yahoo.fr",
+				name : "Stephen's Lawson"
+			}
+		]
+	};
+
+	document.getElementById("result").innerHTML = O2("users", data);
+
+	</script>
+
+</body>
