@@ -1,4 +1,43 @@
 OxygenJS
 ========
 
-High Performance JavaScript MicroTemplating with Jinja like syntax
+OxygenJS is a High Performance JavaScript MicroTemplating with Jinja like syntax.
+This library is just a proof of concept, use it at your own risk ;-)
+
+See demo.html for more information.
+
+Usage
+-----
+Start by creating a template in your HTML code, like this:
+
+    <script type="html/template" id="users">
+    <ul>
+        {% for i in users %}
+            <li><a href="{{ users[i].url }}">{{ users[i].name|capitalize }}</a></li>
+            {% if users[i].name == "John Doz" %}
+                <div>{{ users[i].name|capitalize|replace("doz", "Doe") }}</div>
+            {% else %}
+                <div>no no no</div>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    </script>
+
+Then, to feed your template with data, just do the following:
+
+	var data = {
+		users : [
+			{
+				url : 'http://www.google.fr',
+				name : 'John Doz'
+			},
+			{
+				url : "http://www.yahoo.fr",
+				name : "Stephen's Lawson"
+			}
+		]
+	};
+
+	document.getElementById("result").innerHTML = O2("users", data);
+
+
