@@ -1,5 +1,5 @@
 // +--------------------------------------------------------------------+ \\
-// ¦ OxygenJS 0.2.3 - High Performance JavaScript MicroTemplating       ¦ \\
+// ¦ OxygenJS 0.2.4 - High Performance JavaScript MicroTemplating       ¦ \\
 // +--------------------------------------------------------------------+ \\
 // ¦ Copyright © 2016 Vincent Fontaine                                  ¦ \\
 // +---------+----------------------------------------------------------+ \\
@@ -547,8 +547,9 @@
 		},
 
 		title : function(str){
+			str = normalize(str, '');
 			var words = str.split(' ');
-			for(var i = 0; i < words.length; i++) {
+			for (var i=0; i<words.length; i++) {
 				words[i] = this.capitalize(words[i]);
 			}
 			return safeCopy(str, words.join(' '));
@@ -560,10 +561,10 @@
 
 		truncate : function(input, length, killwords, end){
 			var orig = input;
+			input = normalize(input, '');
 			length = length || 255;
 
-			if (input.length <= length)
-				return input;
+			if (input.length <= length) return input;
 
 			if (killwords) {
 				input = input.substring(0, length);
@@ -581,10 +582,34 @@
 		},
 
 		upper : function(str){
+			str = normalize(str, '');
 			return str.toUpperCase();
 		},
 
+		urlencode : function(obj){
+			var parts, enc = encodeURIComponent;
+
+			if (lib.isString(obj)) {
+				return enc(obj);
+			}
+
+			if (lib.isArray(obj)) {
+				parts = obj.map(function(item){
+					return enc(item[0]) + '=' + enc(item[1]);
+				});
+			} else {
+				parts = [];
+				for (var k in obj) {
+					if (obj.hasOwnProperty(k)) {
+						parts.push(enc(k) + '=' + enc(obj[k]));
+					}
+				}
+			}
+			return parts.join('&');
+		},
+
 		wordcount : function(str){
+			str = normalize(str, '');
 			return str.match(/\w+/g).length;
 		},
 
