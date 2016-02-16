@@ -1,5 +1,5 @@
 // +--------------------------------------------------------------------+ \\
-// ¦ OxygenJS 0.2.0 - High Performance JavaScript MicroTemplating       ¦ \\
+// ¦ OxygenJS 0.2.3 - High Performance JavaScript MicroTemplating       ¦ \\
 // +--------------------------------------------------------------------+ \\
 // ¦ Copyright © 2016 Vincent Fontaine                                  ¦ \\
 // +---------+----------------------------------------------------------+ \\
@@ -423,11 +423,18 @@
 		},
 
 		reverse : function(val){
-			var arr = lib.map(val, function(v){
-				return v;
-			});
+			var arr;
+			if (lib.isString(val)) {
+				arr = this.list(val);
+			} else {
+				arr = lib.map(val, function(v){
+					return v;
+				});
+			}
+
 			arr.reverse();
-			return arr;
+
+			return (lib.isString(val)) ? safeCopy(val, arr.join('')) : arr;
 		},
 
 		round : function(val, precision, method){
@@ -435,12 +442,10 @@
 			var factor = Math.pow(10, precision),
 				rounder;
 
-			if (method == 'ceil') {
-				rounder = Math.ceil;
-			} else if (method == 'floor') {
-				rounder = Math.floor;
-			} else {
-				rounder = Math.round;
+			switch (method) {
+				case "ceil" : rounder = Math.ceil; break;
+				case "floor" : rounder = Math.floor; break;
+				default : rounder = Math.round;
 			}
 
 			return rounder(val * factor) / factor;
