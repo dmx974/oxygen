@@ -7,7 +7,7 @@ See demo.html for more information.
 Why OxygenJS?
 -------------
 
-- It's small (6.3 Kb minified, 2714 bytes gzip)
+- It's small (7.7 Kb minified, 3103 bytes gzip)
 - It's fast (almost no branch, no parser, no lexer, only use split, join and replace)
 
 Usage
