@@ -1,15 +1,13 @@
 OxygenJS
 ========
 
-OxygenJS is a High Performance JavaScript MicroTemplating with Jinja like syntax.
-This library is just a proof of concept, use it at your own risk ;-)
-
+OxygenJS is a High Performance JavaScript MicroTemplating with Jinja like syntax. 
 See demo.html for more information.
 
 Why OxygenJS?
 -------------
 
-- It's small (5.3 Kb minified, 2214 bytes gzip)
+- It's small (6.3 Kb minified, 2714 bytes gzip)
 - It's fast (almost no branch, no parser, no lexer, only use split, join and replace)
 
 Usage

@@ -1,6 +1,6 @@
 <html>
 <head>
-	<script type="text/javascript" src="oxygen.min.js"></script>
+	<script type="text/javascript" src="oxygen.js"></script>
 </head>
 
 <body>
@@ -8,12 +8,16 @@
 	<script type="html/template" id="users">
 		<ul>
 		{% for i in users %}
-			<li><a href="{{ users[i].url }}">{{ users[i].name|capitalize }}</a></li>
-			{% if users[i].name == "John Doz" %}
-				<div>{{ users[i].name|capitalize|replace("doz", "Doe") }}</div>
-			{% else %}
-				<div>no no no</div>
-			{% endif %}
+			<li id="{{ users[i].id }}" class="{{ "row"+i }}{{ (i % 2 == 1 ? " even" : "") }}">
+				<a href="{{ users[i].url }}">{{ users[i].name|title }}</a>
+
+				{% if users[i].name == "John Doz" %}
+					<div>{{ users[i].name|upper|replace("DOZ", "DOE") }}</div>
+				{% else %}
+					<div>{{ message }}</div>
+				{% endif %}
+			</li>
+
 		{% endfor %}
 		</ul>
 	</script>
@@ -26,14 +30,22 @@
 	<script type="text/javascript">
 
 	var data = {
+		message : "No match",
 		users : [
 			{
-				url : 'http://www.google.fr',
-				name : 'John Doz'
+				id : 25,
+				url : "http://www.google.fr",
+				name : "John Doz"
 			},
 			{
-				url : "http://www.yahoo.fr",
+				id : 26,
+				url : "http://www.slack.com",
 				name : "Stephen's Lawson"
+			},
+			{
+				id : 27,
+				url : "http://www.yahoo.fr",
+				name : "Blake Newton"
 			}
 		]
 	};
