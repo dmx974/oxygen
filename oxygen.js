@@ -1,5 +1,5 @@
 // +--------------------------------------------------------------------+ \\
-// ¦ OxygenJS 0.2.4 - High Performance JavaScript MicroTemplating       ¦ \\
+// ¦ OxygenJS 0.2.5 - High Performance JavaScript MicroTemplating       ¦ \\
 // +--------------------------------------------------------------------+ \\
 // ¦ Copyright © 2016 Vincent Fontaine                                  ¦ \\
 // +---------+----------------------------------------------------------+ \\
@@ -10,7 +10,7 @@
 // ¦   * John Resig for his excellent work (http://ejohn.org/)          ¦ \\
 // +--------------------------------------------------------------------+ \\
 
-(function(){
+(function(target){
 	var c = {},
 		d = document,
 		opts = Object.prototype.toString,
@@ -117,7 +117,7 @@
 		return (value === null || value === undefined || value === false) ? defaultValue : value;
 	};
 
-	this.O2 = function tmpl(id, data){
+	target.O2 = function tmpl(id, data){
 		var z = !/\W/.test(id) ? c[id] = c[id] || O2(html(id)) : new Function("obj",
 			"var p=[];with(obj){p.push('" +
 			id
@@ -135,7 +135,7 @@
 		return data ? z(data) : z;
 	};
 
-	this.O2.filters = {
+	target.O2.filters = {
 		abs : function(n){
 			return Math.abs(n);
 		},
@@ -623,4 +623,4 @@
 			return isNaN(res) ? def : res;
 		}
 	};
-})();
+})(window);
