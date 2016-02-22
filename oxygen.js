@@ -1,5 +1,5 @@
 // +--------------------------------------------------------------------+ \\
-// ¦ OxygenJS 0.2.5 - High Performance JavaScript MicroTemplating       ¦ \\
+// ¦ OxygenJS 0.2.6 - High Performance JavaScript MicroTemplating       ¦ \\
 // +--------------------------------------------------------------------+ \\
 // ¦ Copyright © 2016 Vincent Fontaine                                  ¦ \\
 // +---------+----------------------------------------------------------+ \\
@@ -40,6 +40,10 @@
 	var safeCopy = function(dest, target){
 		if (dest instanceof safeString) return new safeString(target);
 		return target.toString();
+	};
+
+	var normalize = function(value, defaultValue){
+		return (value === null || value === undefined || value === false) ? defaultValue : value;
 	};
 
 	var escapeMap = {
@@ -104,7 +108,7 @@
 			var par = (f.indexOf("(") + 1) || f.length,
 				pl = (par == f.length);
 
-			return "O2.filters." + f.substring(0, par)
+			return "Object.O2.filters." + f.substring(0, par)
 				+ (pl ? "(" : "")
 				+ txt
 				+ (pl ? ")" : ", ") + f.substring(par);
@@ -113,20 +117,21 @@
 		return "', " + r + ", '";
 	};
 
-	var normalize = function(value, defaultValue){
-		return (value === null || value === undefined || value === false) ? defaultValue : value;
-	};
+	Object.O2 = function tmpl(id, data){
+		if (id==='' && id === undefined) return '';
 
-	target.O2 = function tmpl(id, data){
-		var z = !/\W/.test(id) ? c[id] = c[id] || O2(html(id)) : new Function("obj",
+		var z = !/\W/.test(id) ? c[id] = c[id] || Object.O2(html(id)) : new Function("obj",
 			"var p=[];with(obj){p.push('" +
 			id
 			.replace(/{%[ ]*for ([$a-zA-Z_]+) in ([$a-zA-Z_]+([.][$a-zA-Z_]+)*)[ ]*%}/g, "{% for (var $1=0; $1<$2.length; $1++) { %}")
-			.replace(/{%[ ]*if (.+[^ ]{1})[ ]*%}/g, '{% if ($1) { %}')
+			.replace(/{%[ ]*if (((?!%}).)*[^ ])\s*%}/g, '{% if ($1) { %}')
 			.replace(/{%[ ]*end[if|for]*[ ]*%}/g, '{% } %}')
-			.replace(/{%[ ]*else[ ]*%}/g, '{% }else{ %}')
+			.replace(/{%[ ]*else[ ]*%}/g, '{% } else { %}')
 			.replace(/[\r\t\n]/g, " ")
-			.split("{%").join("');")
+			.split("{%").join("\t")
+			.replace(/((^|%})[^\t]*)'/g, "$1\r")
+			.replace(/\t=(.*?)%}/g, "',$1,'")
+			.split("\t").join("');")
 			.split("%}").join("p.push('")
 			.split("\r").join("\\'")
 			.replace(/{{2}[ ]*([^{}, ]*[^{}]*[^{}, ]+)[ ]*}{2}/g, filter)
@@ -135,7 +140,8 @@
 		return data ? z(data) : z;
 	};
 
-	target.O2.filters = {
+
+	Object.O2.filters = {
 		abs : function(n){
 			return Math.abs(n);
 		},
@@ -623,4 +629,7 @@
 			return isNaN(res) ? def : res;
 		}
 	};
+
+	target.O2 = Object.O2;
+
 })(window);
